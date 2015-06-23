@@ -7,9 +7,9 @@
 //
 
 import Foundation
-import Realm
+import RealmSwift
 
-class Note : RLMObject {
+class Note : Object {
 
     
 }
