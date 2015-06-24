@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="5P2-fx-Fqc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Dashboard-->
@@ -16,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="vyT-so-Oa6">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="vyT-so-Oa6">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -49,15 +50,83 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="vyT-so-Oa6" secondAttribute="trailing" constant="-16" id="E2w-d8-Lhv"/>
+                            <constraint firstItem="vyT-so-Oa6" firstAttribute="leading" secondItem="poT-Qu-LRL" secondAttribute="leadingMargin" constant="-16" id="PAb-Qs-QbG"/>
+                            <constraint firstItem="3rq-me-LIZ" firstAttribute="top" secondItem="vyT-so-Oa6" secondAttribute="bottom" id="gV4-EU-RAh"/>
+                            <constraint firstItem="vyT-so-Oa6" firstAttribute="top" secondItem="poT-Qu-LRL" secondAttribute="topMargin" id="gow-xw-Ddm"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Home" id="m7W-J0-R60"/>
+                    <navigationItem key="navigationItem" title="Dashboard" id="m7W-J0-R60">
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="zaT-wn-hiq">
+                            <connections>
+                                <segue destination="ust-G1-YCX" kind="show" id="Zcq-ev-S3L"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="vyT-so-Oa6" id="Hsu-i6-HEV"/>
+                        <segue destination="q9p-Bu-nXY" kind="show" identifier="ShowExistingNote" id="Dwq-U8-kkh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fqb-43-s5w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1156" y="503"/>
+        </scene>
+        <!--New Note View Controller Scene-->
+        <scene sceneID="nuI-Cq-mbp">
+            <objects>
+                <viewController title="Add New Note" id="ust-G1-YCX" userLabel="New Note View Controller Scene" customClass="NewNoteViewController" customModule="MakeSchoolNotes" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gOq-ge-hju"/>
+                        <viewControllerLayoutGuide type="bottom" id="YAM-zL-F3K"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="CA5-vK-bkR">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gh4-hQ-Qz7">
+                                <rect key="frame" x="0.0" y="64" width="600" height="583"/>
+                                <connections>
+                                    <segue destination="q9p-Bu-nXY" kind="embed" identifier="ShowNewNote" id="195-If-QtB"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Add New Note" id="Chz-k0-rGk">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="3Ko-L6-0i1">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="5ob-VY-DNs">
+                                <rect key="frame" x="-23" y="-15" width="133" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="ayR-Hc-dQu" kind="unwind" identifier="Cancel" unwindAction="unwindToSegue:" id="6P0-5y-ppG"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="Lp5-br-22k">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Pfl-SA-0pa">
+                                <rect key="frame" x="-23" y="-15" width="133" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="ayR-Hc-dQu" kind="unwind" identifier="Save" unwindAction="unwindToSegue:" id="s5a-db-Tcu"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ouu-ba-ldd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="ayR-Hc-dQu" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1878" y="503"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="aVg-hh-DIK">
@@ -75,5 +144,45 @@
             </objects>
             <point key="canvasLocation" x="376" y="503"/>
         </scene>
+        <!--Note Display View Controller-->
+        <scene sceneID="RLU-gS-nUq">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="q9p-Bu-nXY" userLabel="Note Display View Controller" customClass="NewNoteViewController" customModule="MakeSchoolNotes" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="96v-4L-3Kc"/>
+                        <viewControllerLayoutGuide type="bottom" id="lrX-v0-dtL"/>
+                    </layoutGuides>
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="EhU-fh-VJU">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRl-FG-CbF">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem title="Item" id="xKI-uR-ijd">
+                                        <connections>
+                                            <segue destination="Sxh-Du-Toc" kind="unwind" identifier="Delete" unwindAction="unwindToSegue:" id="da2-Jy-hby"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="cRl-FG-CbF" secondAttribute="trailing" constant="-16" id="NyR-iG-Nzj"/>
+                            <constraint firstItem="lrX-v0-dtL" firstAttribute="top" secondItem="cRl-FG-CbF" secondAttribute="bottom" id="RPt-eZ-MXE"/>
+                            <constraint firstItem="cRl-FG-CbF" firstAttribute="leading" secondItem="EhU-fh-VJU" secondAttribute="leadingMargin" constant="-16" id="Up5-vw-kBP"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zGZ-Y1-TQ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Sxh-Du-Toc" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1510" y="1375"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Dwq-U8-kkh"/>
+    </inferredMetricsTieBreakers>
 </document>
