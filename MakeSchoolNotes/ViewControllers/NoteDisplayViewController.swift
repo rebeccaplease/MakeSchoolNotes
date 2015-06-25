@@ -16,6 +16,8 @@ class NoteDisplayViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentTextView: TextView! //from ConvienienceKit
     
+    var edit:Bool = false
+    
     var note: Note? {
         didSet {
             displayNote(note)
@@ -26,6 +28,10 @@ class NoteDisplayViewController: UIViewController {
         super.viewWillAppear(animated)
         
         displayNote(note)
+        
+        titleTextField.returnKeyType = .Next //rename return to Next
+        titleTextField.delegate = self //set delegate of type UITextFieldDelegate (implemented as class extension)
+        
     }
     
     //MARK: Business Logic
@@ -34,6 +40,10 @@ class NoteDisplayViewController: UIViewController {
         if let note = note, titleTextField = titleTextField, contentTextView = contentTextView  {
             titleTextField.text = note.title
             contentTextView.text = note.content
+            
+            if(count(note.title) == 0 && count(note.content) == 0) { //check for content in title and text field
+                titleTextField.becomeFirstResponder() //title field is highlighted when creating a new note
+            }
         }
     }
     
@@ -58,5 +68,17 @@ class NoteDisplayViewController: UIViewController {
             
         }
         
+    }
+}
+
+extension NoteDisplayViewController: UITextFieldDelegate {
+    
+    //called when Next is pressed (from title)
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if (textField == titleTextField) { //if highlighted text field is titleTextField
+            contentTextView.returnKeyType = .Done //change return to Done
+            contentTextView.becomeFirstResponder() //returns true
+        }
+        return false
     }
 }
