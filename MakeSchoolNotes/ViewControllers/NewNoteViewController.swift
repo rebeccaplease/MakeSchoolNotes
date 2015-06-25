@@ -9,7 +9,7 @@
 import UIKit
 
 class NewNoteViewController: UIViewController {
-
+    
     //declare variable
     var currentNote: Note?
     
@@ -19,7 +19,7 @@ class NewNoteViewController: UIViewController {
         // Do any additional setup after loading the view.
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -27,18 +27,20 @@ class NewNoteViewController: UIViewController {
     
     
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        
-        //instantiate currentNote when button is pressed
-        currentNote = Note()
-        //add dummy title and content
-        currentNote!.title = "testing"
-        currentNote!.content = "hello everyone"
-    }
     
-
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new View Controller using segue.destinationViewController.
+        // Pass the selected object to the new View Controller.
+        
+        if (segue.identifier == "ShowNewNote") {
+            // create a new Note and hold onto it, to be able to save it later
+            currentNote = Note()
+            let noteViewController = segue.destinationViewController as! NoteDisplayViewController
+            noteViewController.note = currentNote
+            
+        }
+    }
 }
+

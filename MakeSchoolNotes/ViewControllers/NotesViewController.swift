@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  NotesViewController.swift
 //  MakeSchoolNotes
 //
 //  Created by Martin Walsh on 29/05/2015.
@@ -13,6 +13,8 @@ class NotesViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
+    var selectedNote: Note?
+    
     var notes: Results<Note>! {
         didSet {
             // Whenever notes update, update the table view
@@ -20,35 +22,20 @@ class NotesViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        /*
+    override func viewDidLoad() { //called once
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
         tableView.dataSource = self
-        let myNote = Note()
-        myNote.title   = "Super Simple Test Note"
-        myNote.content = "A long piece of content"
-        
-        //add myNote to Realm database
-        let realm = Realm() // 1
-        realm.write() { // 2
-        realm.add(myNote) // 3
-        //for deleting all notes
-        realm.deleteAll()
-        
-        }
-        notes = realm.objects(Note)
-        */
+        tableView.delegate = self
+    }
+    
+    override func viewWillAppear(animated: Bool) { //refresh view on each load
+        super.viewWillAppear(animated)
         
         //load data from Realm
         let realm = Realm()
-        super.viewDidLoad()
-        tableView.dataSource = self
-        
         //sort by date
         notes = realm.objects(Note).sorted("modificationDate", ascending: false)
-        tableView.dataSource = self
-        tableView.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -70,15 +57,29 @@ class NotesViewController: UIViewController {
                     realm.add(source.currentNote!)
                 }
                 
+            case "Delete":
+                realm.write() {
+                    realm.delete(self.selectedNote!)
+                }
+                let source = segue.sourceViewController as! NoteDisplayViewController
+                source.note = nil; //
+                
             default:
                 println("No one loves \(identifier)")
             }
-            
-            notes = realm.objects(Note).sorted("modificationDate", ascending: false) //2 sort loaded data (by date modified)
+            notes = realm.objects(Note).sorted("modificationDate", ascending: false) //2 reload and sort loaded data (by date modified)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "ShowExistingNote") {
+            let noteViewController = segue.destinationViewController as! NoteDisplayViewController //access note in NoteDisplayVC
+            noteViewController.note = selectedNote
         }
     }
     
 }
+
 
 extension NotesViewController: UITableViewDataSource {
     
@@ -106,14 +107,12 @@ extension NotesViewController: UITableViewDataSource {
     
 }
 
-var selectedNote: Note?
-
 extension NotesViewController: UITableViewDelegate {
     
     //selected row? get index
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selectedNote = notes[indexPath.row]      //1
-        //self.performSegueWithIdentifier("ShowExistingNote", sender: self)     //2 segue into newNoteVC
+        self.performSegueWithIdentifier("ShowExistingNote", sender: self)     //2 segue into newNoteVC
     }
     
     // 3 can edit row?

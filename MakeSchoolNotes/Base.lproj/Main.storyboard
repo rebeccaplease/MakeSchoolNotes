@@ -60,7 +60,7 @@
                     <navigationItem key="navigationItem" title="Dashboard" id="m7W-J0-R60">
                         <barButtonItem key="leftBarButtonItem" systemItem="add" id="zaT-wn-hiq">
                             <connections>
-                                <segue destination="ust-G1-YCX" kind="show" id="Zcq-ev-S3L"/>
+                                <segue destination="ust-G1-YCX" kind="show" identifier="ShowNewNote" id="Zcq-ev-S3L"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -147,7 +147,7 @@
         <!--Note Display View Controller-->
         <scene sceneID="RLU-gS-nUq">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="q9p-Bu-nXY" userLabel="Note Display View Controller" customClass="NewNoteViewController" customModule="MakeSchoolNotes" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="q9p-Bu-nXY" userLabel="Note Display View Controller" customClass="NoteDisplayViewController" customModule="MakeSchoolNotes" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="96v-4L-3Kc"/>
                         <viewControllerLayoutGuide type="bottom" id="lrX-v0-dtL"/>
@@ -156,10 +156,51 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FYP-Qj-Cl8">
+                                <rect key="frame" x="16" y="64" width="568" height="400"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Pff-D0-Qkw">
+                                        <rect key="frame" x="8" y="8" width="552" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="Rkr-wn-1UJ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8g-VY-61m" customClass="TextView" customModule="ConvenienceKit">
+                                        <rect key="frame" x="8" y="46" width="552" height="346"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="346" id="G2b-ob-cf3"/>
+                                        </constraints>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Pff-D0-Qkw" secondAttribute="trailing" constant="8" id="2yJ-1u-CVc"/>
+                                    <constraint firstItem="v8g-VY-61m" firstAttribute="leading" secondItem="FYP-Qj-Cl8" secondAttribute="leading" constant="8" id="5On-ki-UQg"/>
+                                    <constraint firstAttribute="bottom" secondItem="v8g-VY-61m" secondAttribute="bottom" constant="8" id="NuE-zb-cr1"/>
+                                    <constraint firstItem="v8g-VY-61m" firstAttribute="top" secondItem="Pff-D0-Qkw" secondAttribute="bottom" constant="8" symbolic="YES" id="Otc-qU-1jJ"/>
+                                    <constraint firstItem="Pff-D0-Qkw" firstAttribute="top" secondItem="FYP-Qj-Cl8" secondAttribute="top" constant="8" id="ZEe-WY-b82"/>
+                                    <constraint firstAttribute="centerX" secondItem="Pff-D0-Qkw" secondAttribute="centerX" id="ZaE-5E-lEX"/>
+                                    <constraint firstAttribute="height" constant="400" id="aUL-Nz-oYD"/>
+                                    <constraint firstAttribute="bottom" secondItem="Pff-D0-Qkw" secondAttribute="bottom" constant="8" id="gdv-1R-0m3"/>
+                                    <constraint firstAttribute="centerX" secondItem="v8g-VY-61m" secondAttribute="centerX" id="nSO-GO-Ccl"/>
+                                    <constraint firstAttribute="trailing" secondItem="v8g-VY-61m" secondAttribute="trailing" constant="8" id="xLE-nx-qjg"/>
+                                    <constraint firstItem="Pff-D0-Qkw" firstAttribute="leading" secondItem="FYP-Qj-Cl8" secondAttribute="leading" constant="8" id="xhp-aq-Y7k"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="gdv-1R-0m3"/>
+                                    </mask>
+                                </variation>
+                            </scrollView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRl-FG-CbF">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
-                                    <barButtonItem title="Item" id="xKI-uR-ijd">
+                                    <barButtonItem systemItem="trash" id="xKI-uR-ijd">
                                         <connections>
                                             <segue destination="Sxh-Du-Toc" kind="unwind" identifier="Delete" unwindAction="unwindToSegue:" id="da2-Jy-hby"/>
                                         </connections>
@@ -169,17 +210,24 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="FYP-Qj-Cl8" firstAttribute="leading" secondItem="EhU-fh-VJU" secondAttribute="leadingMargin" id="JIh-Y6-BUa"/>
                             <constraint firstAttribute="trailingMargin" secondItem="cRl-FG-CbF" secondAttribute="trailing" constant="-16" id="NyR-iG-Nzj"/>
                             <constraint firstItem="lrX-v0-dtL" firstAttribute="top" secondItem="cRl-FG-CbF" secondAttribute="bottom" id="RPt-eZ-MXE"/>
                             <constraint firstItem="cRl-FG-CbF" firstAttribute="leading" secondItem="EhU-fh-VJU" secondAttribute="leadingMargin" constant="-16" id="Up5-vw-kBP"/>
+                            <constraint firstItem="FYP-Qj-Cl8" firstAttribute="trailing" secondItem="EhU-fh-VJU" secondAttribute="trailingMargin" id="fdA-Dy-M73"/>
+                            <constraint firstItem="FYP-Qj-Cl8" firstAttribute="top" secondItem="96v-4L-3Kc" secondAttribute="bottom" id="uqv-UL-yHV"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
+                    <connections>
+                        <outlet property="contentTextView" destination="v8g-VY-61m" id="3x0-D6-kRx"/>
+                        <outlet property="titleTextField" destination="Pff-D0-Qkw" id="itm-DC-cpw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zGZ-Y1-TQ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Sxh-Du-Toc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1510" y="1375"/>
+            <point key="canvasLocation" x="1878" y="1352"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
