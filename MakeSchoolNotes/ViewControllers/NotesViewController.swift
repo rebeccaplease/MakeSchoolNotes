@@ -20,7 +20,26 @@ class NotesViewController: UIViewController {
         case SearchMode
     }
     
-  
+    var state: State = .DefaultMode {
+        didSet{ //called whenever new value is set (updated)
+            switch (state) {
+                
+            case .DefaultMode:
+                let realm = Realm()
+                notes = realm.objects(Note).sorted("modificationDate", ascending: false) //sort notes by date in default state
+                self.navigationController!.setNavigationBarHidden(false, animated: true) //show navigation controller on top
+                searchBar.resignFirstResponder() //remove keyboard if search bar was previously selected
+                searchBar.text = ""
+                searchBar.showsCancelButton = false
+                
+            case .SearchMode:
+                let searchText = searchBar?.text ?? "" //if no search text, set as empty string
+                searchBar.setShowsCancelButton(true, animated: true) //animate in cancel button
+                notes = searchNotes(searchText) //call search with search bar text
+                self.navigationController!.setNavigationBarHidden(true, animated: true) //hide navigation bar on top to focus on search
+            }
+        }
+    }
     
     var selectedNote: Note?
     
@@ -35,7 +54,7 @@ class NotesViewController: UIViewController {
         super.viewDidLoad()
         
         tableView.dataSource = self
-        //delegates: when associated object is interacted with in view, corresponding delegate functions are called? didSet
+        //delegates: when associated object is interacted with in view, corresponding delegate functions are called in didSet of state
         //make an extension for each type of object in this VC
         tableView.delegate = self
         
@@ -95,9 +114,7 @@ class NotesViewController: UIViewController {
     func searchNotes(searchString: String) -> Results<Note> {
         let realm = Realm()
         let searchPredicate = NSPredicate(format: "title CONTAINS[c] %@ or content CONTAINS[c]%@", searchString, searchString) //search conditions
-        return realm.objects(Note).filter(searchPredicate) //return sorted notes based on input in search bar
-        
-        
+        return realm.objects(Note).filter(searchPredicate).sorted("modificationDate", ascending: false) //return sorted notes in date order based on input in search bar
     }
     
 }
