@@ -19,14 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //for all objects of that type
         //UINavigationBar.appearance().barTintColor = StyleConstants.defaultBlueColor
-        UINavigationBar.appearance().barTintColor = UIColor.magentaColor().colorWithAlphaComponent(0.75)
-        UINavigationBar.appearance().tintColor = UIColor.blackColor()
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.blackColor()]
+        UINavigationBar.appearance().barTintColor = StyleConstants.defaultBlueColor.colorWithAlphaComponent(0.75)
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         UINavigationBar.appearance().translucent = false
         
         UIToolbar.appearance().barTintColor = StyleConstants.defaultBlueColor
         UIToolbar.appearance().tintColor = UIColor.whiteColor()
-        UIToolbar.appearance().translucent = false
+        UIToolbar.appearance().translucent = true
 
         
         return true
