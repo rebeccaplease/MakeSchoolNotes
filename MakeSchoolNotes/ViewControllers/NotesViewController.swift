@@ -68,6 +68,7 @@ class NotesViewController: UIViewController {
         notes = realm.objects(Note).sorted("modificationDate", ascending: false)
         //reset to default
         state = .DefaultMode
+        self.navigationController!.setNavigationBarHidden(false, animated: true) //reshow navigation controller after clicking on a search result
         super.viewWillAppear(animated)
     }
     
