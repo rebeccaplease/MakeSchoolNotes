@@ -11,7 +11,16 @@ import RealmSwift
 
 class NotesViewController: UIViewController {
     
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    
+    //state machine
+    enum State {
+        case DefaultMode
+        case SearchMode
+    }
+    
+  
     
     var selectedNote: Note?
     
@@ -26,16 +35,21 @@ class NotesViewController: UIViewController {
         super.viewDidLoad()
         
         tableView.dataSource = self
+        //delegates: when associated object is interacted with in view, corresponding delegate functions are called? didSet
+        //make an extension for each type of object in this VC
         tableView.delegate = self
+        
+        searchBar.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) { //refresh view on each load
-        super.viewWillAppear(animated)
-        
         //load data from Realm
         let realm = Realm()
         //sort by date
         notes = realm.objects(Note).sorted("modificationDate", ascending: false)
+        //reset to default
+        state = .DefaultMode
+        super.viewWillAppear(animated)
     }
     
     override func didReceiveMemoryWarning() {
@@ -76,6 +90,14 @@ class NotesViewController: UIViewController {
             let noteViewController = segue.destinationViewController as! NoteDisplayViewController //access note in NoteDisplayVC
             noteViewController.note = selectedNote
         }
+    }
+    //MARK: Search Bar
+    func searchNotes(searchString: String) -> Results<Note> {
+        let realm = Realm()
+        let searchPredicate = NSPredicate(format: "title CONTAINS[c] %@ or content CONTAINS[c]%@", searchString, searchString) //search conditions
+        return realm.objects(Note).filter(searchPredicate) //return sorted notes based on input in search bar
+        
+        
     }
     
 }
@@ -134,6 +156,18 @@ extension NotesViewController: UITableViewDelegate {
             notes = realm.objects(Note).sorted("modificationDate", ascending: false)
         }
     }
-    
-    
 }
+extension NotesViewController: UISearchBarDelegate {
+    //set state to search mode if search bar is active
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        state = .SearchMode
+    }
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        state = .DefaultMode
+    }
+    //call searchNotes function using parameters in searchBar
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        notes = searchNotes(searchText)
+    }
+}
+
