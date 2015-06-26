@@ -39,7 +39,7 @@ class NewNoteViewController: UIViewController {
             currentNote = Note()
             let noteViewController = segue.destinationViewController as! NoteDisplayViewController
             noteViewController.note = currentNote
-            
+            noteViewController.edit = true
         }
     }
 }

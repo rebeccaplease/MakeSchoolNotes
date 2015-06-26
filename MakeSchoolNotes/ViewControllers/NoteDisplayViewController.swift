@@ -16,6 +16,11 @@ class NoteDisplayViewController: UIViewController {
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentTextView: TextView! //from ConvienienceKit
     
+    @IBOutlet weak var deleteButton: UIBarButtonItem!
+    @IBOutlet weak var toolbarBottomSpace: NSLayoutConstraint!
+    
+    var keyboardNotificationHandler: KeyboardNotificationHandler?
+    
     var edit:Bool = false
     
     var note: Note? {
@@ -32,6 +37,23 @@ class NoteDisplayViewController: UIViewController {
         titleTextField.returnKeyType = .Next //rename return to Next
         titleTextField.delegate = self //set delegate of type UITextFieldDelegate (implemented as class extension)
         
+        keyboardNotificationHandler = KeyboardNotificationHandler()
+        
+        keyboardNotificationHandler!.keyboardWillBeHiddenHandler = {(height: CGFloat) in UIView.animateWithDuration(0.3) {
+            self.toolbarBottomSpace.constant = 0
+            self.view.layoutIfNeeded()
+            }
+        }
+        
+        keyboardNotificationHandler!.keyboardWillBeShownHandler = {(height: CGFloat) in UIView.animateWithDuration(0.3) {
+            self.toolbarBottomSpace.constant = -height //move toolbar to top
+            self.view.layoutIfNeeded()
+            }
+        }
+        
+        if edit {
+            deleteButton.enabled = false
+        }
     }
     
     //MARK: Business Logic
@@ -61,7 +83,7 @@ class NoteDisplayViewController: UIViewController {
             realm.write {
                 if(note.title != self.titleTextField.text || note.content != self.contentTextView.textValue) {
                     note.title = self.titleTextField.text
-                note.content = self.contentTextView.textValue
+                    note.content = self.contentTextView.textValue
                     note.modificationDate = NSDate()
                 }
             }
